@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="app.css" media="screen" />
+   
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Oh Snap! version by Trevo ME</title>
+  </head>
+
+  <body>
+    <div id="ohsnap"></div>
+    <div id="container">
+        <div class="inner">
+  
+          <header>
+            <h1>Oh Snap!</h1>
+            <h2>A simple notification jQuery/Zepto library designed to be used in mobile apps</h2>
+          </header>
+  
+          
+   
+    <div class="buttons">
+        <p><a class="button" id="default"><span>Default</span></a></p>
+        <p><a class="button" id="red"><span>Error</span></a></p>
+        <p><a class="button" id="green"><span>Success</span></a></p>
+        <p><a class="button" id="blue"><span>Info</span></a></p>
+        <p><a class="button" id="yellow"><span>Warning</span></a></p>
+        <p><a class="button" id="silver"><span>Silver Color</span></a></p>
+        <p><a class="button" id="purple"><span>Purple Color</span></a></p>
+        <p><a class="button" id="orange"><span>Extra</span></a></p>
+        <p><a class="button" id="ajaxCEP"><span>AJAX CEP</span></a></p>
+        <span id="loading" style="display:none;">[Carregando...]</span>
+    </div>
+      
+    <script src="jquery.js" type="text/javascript" charset="utf-8"></script>
+    <script src="ohsnap.js" type="text/javascript" charset="utf-8"></script>
+    <script src="main.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+        $("#ajaxCEP").on("click", function(){
+
+            var loading = $("#loading");
+            var cep = "60450225";
+
+            loading.show();
+            if(cep !== "" && cep.length == 8){
+
+                $.ajax({
+                    url: "https://viacep.com.br/ws/"+cep+"/json/",
+                    type: "GET",
+                    dataType: "json",
+                    success: function (data) {
+
+                        setTimeout(() => {ohSnap('O CEP pertence a rua '+data.logradouro, {'color': 'purple'});}, 500);
+						setTimeout(() => {ohSnap('Complemento '+data.complemento, {'color': 'blue'});}, 2000);
+                        setTimeout(() => {ohSnap('Bairro '+data.bairro, {'color': 'yellow'});}, 4000);
+                        setTimeout(() => {ohSnap('Localidade '+data.localidade, {'color': 'orange'});}, 6000);
+                        setTimeout(() => {ohSnap('UF '+data.uf, {'color': 'red'});}, 8000);
+                        setTimeout(() => {ohSnap('Unidade '+data.unidade, {'color': 'green'});}, 10000);
+
+                    },
+                    error: function(data){
+                        ohSnap('Algum erro ocorreu, consulte o log.', {'color': 'red'});
+                    },
+                    complete: function(){
+                        loading.hide();
+                    }
+                });
+
+            }else{
+                ohSnap('CEP deve conter 8 digitos!', {'color': 'red'});
+            }
+        });
+    </script>
+</div>
+</div>
+</div>
+</body>
+</html>
